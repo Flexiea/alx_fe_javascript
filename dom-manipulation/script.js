@@ -8,6 +8,9 @@ let quotes = JSON.parse(localStorage.getItem("quotes")) || [
 // --- DOM Elements --- //
 const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
+const addQuoteBtn = document.getElementById("addQuoteBtn");
+const exportBtn = document.getElementById("exportBtn");
+const importFile = document.getElementById("importFile");
 
 // --- Function to Display a Random Quote --- //
 function showRandomQuote() {
@@ -22,66 +25,20 @@ function showRandomQuote() {
   // Save last viewed quote in sessionStorage
   sessionStorage.setItem("lastQuote", JSON.stringify(quote));
 
-  // Clear old content
-  quoteDisplay.innerHTML = "";
-
-  // Create quote text and category dynamically
-  const quoteText = document.createElement("p");
-  quoteText.textContent = `"${quote.text}"`;
-
-  const quoteCategory = document.createElement("p");
-  quoteCategory.textContent = `— ${quote.category}`;
-  quoteCategory.classList.add("category");
-
-  // Append to display
-  quoteDisplay.appendChild(quoteText);
-  quoteDisplay.appendChild(quoteCategory);
-}
-
-// --- Function to Create Add Quote Form --- //
-function createAddQuoteForm() {
-  const formContainer = document.createElement("div");
-  formContainer.classList.add("form-container");
-
-  const newQuoteInput = document.createElement("input");
-  newQuoteInput.id = "newQuoteText";
-  newQuoteInput.type = "text";
-  newQuoteInput.placeholder = "Enter a new quote";
-
-  const newCategoryInput = document.createElement("input");
-  newCategoryInput.id = "newQuoteCategory";
-  newCategoryInput.type = "text";
-  newCategoryInput.placeholder = "Enter quote category";
-
-  const addButton = document.createElement("button");
-  addButton.id = "addQuoteBtn";
-  addButton.textContent = "Add Quote";
-  addButton.addEventListener("click", addQuote);
-
-  // JSON Import/Export buttons
-  const exportBtn = document.createElement("button");
-  exportBtn.textContent = "Export Quotes (JSON)";
-  exportBtn.addEventListener("click", exportToJsonFile);
-
-  const importInput = document.createElement("input");
-  importInput.type = "file";
-  importInput.id = "importFile";
-  importInput.accept = ".json";
-  importInput.addEventListener("change", importFromJsonFile);
-
-  formContainer.appendChild(newQuoteInput);
-  formContainer.appendChild(newCategoryInput);
-  formContainer.appendChild(addButton);
-  formContainer.appendChild(exportBtn);
-  formContainer.appendChild(importInput);
-
-  document.body.appendChild(formContainer);
+  // Clear and update display
+  quoteDisplay.innerHTML = `
+    <p>"${quote.text}"</p>
+    <p class="category">— ${quote.category}</p>
+  `;
 }
 
 // --- Function to Add a New Quote --- //
 function addQuote() {
-  const text = document.getElementById("newQuoteText").value.trim();
-  const category = document.getElementById("newQuoteCategory").value.trim();
+  const textInput = document.getElementById("newQuoteText");
+  const categoryInput = document.getElementById("newQuoteCategory");
+
+  const text = textInput.value.trim();
+  const category = categoryInput.value.trim();
 
   if (text === "" || category === "") {
     alert("Please enter both a quote and a category.");
@@ -92,8 +49,8 @@ function addQuote() {
   quotes.push(newQuote);
   saveQuotes();
 
-  document.getElementById("newQuoteText").value = "";
-  document.getElementById("newQuoteCategory").value = "";
+  textInput.value = "";
+  categoryInput.value = "";
 
   quoteDisplay.innerHTML = `<p style="color: green;">New quote added successfully!</p>`;
   setTimeout(showRandomQuote, 1500);
@@ -137,11 +94,13 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
-// --- Initialize Page --- //
+// --- Event Listeners --- //
 newQuoteBtn.addEventListener("click", showRandomQuote);
-createAddQuoteForm();
+addQuoteBtn.addEventListener("click", addQuote);
+exportBtn.addEventListener("click", exportToJsonFile);
+importFile.addEventListener("change", importFromJsonFile);
 
-// Display last viewed quote from sessionStorage (if available)
+// --- Initialize on Page Load --- //
 const lastQuote = JSON.parse(sessionStorage.getItem("lastQuote"));
 if (lastQuote) {
   quoteDisplay.innerHTML = `"${lastQuote.text}" — ${lastQuote.category}`;

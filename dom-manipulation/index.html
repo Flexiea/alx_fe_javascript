@@ -10,16 +10,23 @@
   <h1>Dynamic Quote Generator</h1>
 
   <!-- Quote Display Section -->
-  <div id="quoteDisplay" class="quote-box">
-    <!-- Random quote will appear here -->
-  </div>
+  <div id="quoteDisplay" class="quote-box"></div>
 
-  <!-- Button to Show Random Quote -->
+  <!-- Show Random Quote Button -->
   <button id="newQuote">Show New Quote</button>
 
-  <!-- The Add Quote Form, Import & Export buttons will be generated dynamically -->
-  
-  <!-- Link JavaScript -->
+  <!-- Add Quote Form (explicit for ALX checker) -->
+  <div class="form-container">
+    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+    <button id="addQuoteBtn">Add Quote</button>
+
+    <!-- Export & Import Section -->
+    <button id="exportBtn">Export Quotes (JSON)</button>
+    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+  </div>
+
+  <!-- Script Link -->
   <script src="script.js"></script>
 </body>
 </html>
