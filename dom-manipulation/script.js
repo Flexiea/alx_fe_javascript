@@ -182,4 +182,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     fetchQuotesFromServer();
     setInterval(fetchQuotesFromServer, 30000);
+
+    /* -------------------------------
+   🧩 Task 1: Export Quotes as JSON (Uses Blob)
+-------------------------------- */
+function exportQuotes() {
+    if (quotes.length === 0) {
+        alert("No quotes available to export!");
+        return;
+    }
+
+    // Convert to JSON and create a downloadable Blob
+    const blob = new Blob([JSON.stringify(quotes, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "quotes.json";
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    alert("Quotes exported successfully!");
+}
+
 });
