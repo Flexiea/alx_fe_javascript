@@ -112,9 +112,10 @@ function syncQuotes(serverQuotes) {
     });
 
     if (updated) {
-        alert("Quotes synced with server. Some updates were applied.");
-        saveQuotes();
+        alert("Quotes synced with server!");
     }
+
+
 }
 
 // 🔹 Periodically sync every 30 seconds
