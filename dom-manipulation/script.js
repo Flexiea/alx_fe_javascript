@@ -21,8 +21,8 @@ function saveQuotes() {
   localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
-// --- Display a Random Quote --- //
-function displayRandomQuote() {
+// --- Function to Display a Random Quote (for ALX Task 0 requirement) --- //
+function showRandomQuote() {
   const quoteDisplay = document.getElementById("quoteDisplay");
 
   if (quotes.length === 0) {
@@ -41,6 +41,9 @@ function displayRandomQuote() {
   // Store last viewed quote in session storage
   sessionStorage.setItem("lastViewedQuote", JSON.stringify(quote));
 }
+
+// --- Alias (for consistency with Task 1 / modern naming) --- //
+const displayRandomQuote = showRandomQuote;
 
 // --- Create Add Quote Form (Required by ALX) --- //
 function createAddQuoteForm() {
@@ -86,7 +89,7 @@ function createAddQuoteForm() {
     if (text && category) {
       quotes.push({ text, category });
       saveQuotes();
-      displayRandomQuote();
+      showRandomQuote();
       textInput.value = "";
       categoryInput.value = "";
       alert("New quote added successfully!");
@@ -117,7 +120,7 @@ function importFromJsonFile(event) {
         quotes.push(...importedQuotes);
         saveQuotes();
         alert("Quotes imported successfully!");
-        displayRandomQuote();
+        showRandomQuote();
       } else {
         alert("Invalid JSON format.");
       }
@@ -143,6 +146,6 @@ document.addEventListener("DOMContentLoaded", function () {
       <p><em>— ${quote.category}</em></p>
     `;
   } else {
-    displayRandomQuote();
+    showRandomQuote();
   }
 });
