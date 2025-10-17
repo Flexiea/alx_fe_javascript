@@ -19,6 +19,7 @@ function addQuote(text, author) {
     };
     quotes.push(newQuote);
     saveQuotes();
+    postQuoteToServer(newQuote); // 👈 Send new quote to the mock server
 }
 
 function saveQuotes() {
@@ -38,7 +39,7 @@ function createAddQuoteForm() {
         const text = document.getElementById("quoteText").value;
         const author = document.getElementById("quoteAuthor").value;
         addQuote(text, author);
-        alert("Quote added!");
+        alert("Quote added and synced with server!");
         form.reset();
     });
 
@@ -57,6 +58,7 @@ function exportQuotes() {
    🛰️ TASK 3: Server Sync + Conflict Handling
 -------------------------------- */
 
+// 🔹 Simulate fetching quotes from a mock API
 async function fetchQuotesFromServer() {
     try {
         const response = await fetch("https://jsonplaceholder.typicode.com/posts");
@@ -76,6 +78,25 @@ async function fetchQuotesFromServer() {
     }
 }
 
+// 🔹 Simulate sending (POST) data to the server
+async function postQuoteToServer(quote) {
+    try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(quote)
+        });
+
+        const data = await response.json();
+        console.log("Quote successfully posted to server:", data);
+    } catch (error) {
+        console.error("Error posting quote to server:", error);
+    }
+}
+
+// 🔹 Conflict Resolution: server data wins
 function syncQuotes(serverQuotes) {
     let updated = false;
 
@@ -96,10 +117,10 @@ function syncQuotes(serverQuotes) {
     }
 }
 
-// Periodically sync every 30 seconds
+// 🔹 Periodically sync every 30 seconds
 setInterval(fetchQuotesFromServer, 30000);
 
-// Initialize app
+// 🔹 Initialize app
 document.addEventListener("DOMContentLoaded", () => {
     createAddQuoteForm();
     document.getElementById("showQuoteBtn").addEventListener("click", showRandomQuote);
