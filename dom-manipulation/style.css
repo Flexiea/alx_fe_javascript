@@ -1,69 +1,35 @@
-/* --- General Styles --- */
 body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  color: #333;
-  text-align: center;
-  padding: 40px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f5f5f5;
+    padding: 20px;
 }
 
-h1 {
-  color: #444;
-}
-
-/* --- Quote Display Box --- */
 #quoteDisplay {
-  margin: 20px auto;
-  padding: 20px;
-  background: #fff;
-  width: 60%;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+    font-size: 1.3em;
+    margin: 20px auto;
+    padding: 15px;
+    width: 70%;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.category {
-  color: #666;
-  font-style: italic;
-  margin-top: 5px;
-}
-
-/* --- Form Section --- */
-.form-section {
-  margin-top: 20px;
-}
-
-/* --- Inputs --- */
-input {
-  padding: 8px;
-  margin: 5px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 200px;
-}
-
-/* --- Buttons --- */
 button {
-  padding: 8px 15px;
-  background: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.3s;
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #007bff;
+    color: #fff;
 }
 
 button:hover {
-  background: #0056b3;
+    background: #0056b3;
 }
 
-/* --- Responsive --- */
-@media (max-width: 600px) {
-  #quoteDisplay {
-    width: 90%;
-  }
-
-  input {
-    width: 80%;
-  }
+select, input[type="file"] {
+    margin-top: 10px;
+    padding: 8px;
 }
