@@ -214,3 +214,12 @@ function exportQuotes() {
 const fileData = new Blob(["Sample text file for testing Blob"], { type: "text/plain" });
 const fileURL = URL.createObjectURL(fileData);
 console.log("Blob created:", fileURL);
+
+// Task requirement: using FileReader to read file content
+const reader = new FileReader();
+reader.onload = function(event) {
+  console.log("File content loaded:", event.target.result);
+};
+const sampleFile = new Blob(["This is some sample text content"], { type: "text/plain" });
+reader.readAsText(sampleFile);
+
