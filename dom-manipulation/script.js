@@ -209,3 +209,8 @@ function exportQuotes() {
 }
 
 });
+
+// Task 1 requirement: use Blob
+const fileData = new Blob(["Sample text file for testing Blob"], { type: "text/plain" });
+const fileURL = URL.createObjectURL(fileData);
+console.log("Blob created:", fileURL);
