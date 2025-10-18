@@ -4,43 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Quote Generator</title>
-    <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
     <h1>Dynamic Quote Generator</h1>
 
-    <!-- 🧩 Category Filter (Task 2) -->
-    <select id="categoryFilter" onchange="filterQuotes()">
+    <!-- Display Area -->
+    <div id="quoteDisplay">Click below to show a random quote.</div>
+    <div id="categoryDisplay"></div>
+
+    <!-- Controls -->
+    <button id="showQuoteBtn">Show Random Quote</button>
+    <button id="syncQuotesBtn">Sync Quotes</button>
+    <button onclick="exportQuotes()">Export Quotes</button>
+
+    <!-- Import JSON File -->
+    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+
+    <!-- Category Filter -->
+    <select id="categoryFilter">
         <option value="all">All Categories</option>
     </select>
 
-    <!-- 🧩 Quote Display Area -->
-    <div id="quoteDisplay">Click "Show Random Quote" to begin</div>
-    <p id="categoryDisplay"></p>
-
-    <!-- 🧩 Buttons -->
-    <button id="showQuoteBtn">Show Random Quote</button>
-    <button id="exportQuotesBtn" onclick="exportQuotes()">Export Quotes</button>
-    <button id="syncQuotesBtn">Sync with Server</button>
-
-    <!-- 🧩 JSON Import (Task 1) -->
-    <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
-
-    <script>
-        /* Task 1: Import Quotes Function */
-        function importFromJsonFile(event) {
-            const fileReader = new FileReader();
-            fileReader.onload = function(e) {
-                const importedQuotes = JSON.parse(e.target.result);
-                quotes.push(...importedQuotes);
-                localStorage.setItem("quotes", JSON.stringify(quotes));
-                alert("Quotes imported successfully!");
-            };
-            fileReader.readAsText(event.target.files[0]);
-        }
-    </script>
-
-    <!-- Connect JS -->
+    <!-- The Add Quote Form will be created dynamically by JS -->
+    
     <script src="script.js"></script>
 </body>
 </html>

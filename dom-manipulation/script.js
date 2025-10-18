@@ -27,7 +27,7 @@ function addQuote(text, author, category) {
     };
     quotes.push(newQuote);
     saveQuotes();
-    populateCategories(); // update dropdown when new category is added
+    populateCategories(); 
     postQuoteToServer(newQuote);
 }
 
@@ -38,15 +38,11 @@ function saveQuotes() {
 /* -------------------------------
    🧩 TASK 2: Category Filtering System
 -------------------------------- */
-
-// Populate unique categories into dropdown
 function populateCategories() {
     const categoryFilter = document.getElementById("categoryFilter");
     if (!categoryFilter) return;
 
-    // Get unique categories using map + Set
     const categories = [...new Set(quotes.map(q => q.category || "Uncategorized"))];
-    
     categoryFilter.innerHTML = `<option value="all">All Categories</option>`;
     categories.forEach(cat => {
         const option = document.createElement("option");
@@ -55,7 +51,6 @@ function populateCategories() {
         categoryFilter.appendChild(option);
     });
 
-    // restore saved filter
     const savedFilter = localStorage.getItem("selectedCategory");
     if (savedFilter) {
         categoryFilter.value = savedFilter;
@@ -63,7 +58,6 @@ function populateCategories() {
     }
 }
 
-// Filter quotes based on selected category
 function filterQuotes() {
     const categoryFilter = document.getElementById("categoryFilter");
     const selectedCategory = categoryFilter.value;
@@ -86,7 +80,6 @@ function filterQuotes() {
 /* -------------------------------
    🧩 TASK 3: Server Sync + Conflict Handling
 -------------------------------- */
-
 async function fetchQuotesFromServer() {
     try {
         const response = await fetch("https://jsonplaceholder.typicode.com/posts");
@@ -145,7 +138,6 @@ function syncQuotes(serverQuotes) {
 /* -------------------------------
    🧩 FORM CREATION + EVENT LISTENERS
 -------------------------------- */
-
 function createAddQuoteForm() {
     const form = document.createElement("form");
     form.innerHTML = `
@@ -169,22 +161,7 @@ function createAddQuoteForm() {
 }
 
 /* -------------------------------
-   🚀 INITIALIZE
--------------------------------- */
-
-document.addEventListener("DOMContentLoaded", () => {
-    createAddQuoteForm();
-    populateCategories();
-
-    document.getElementById("showQuoteBtn").addEventListener("click", showRandomQuote);
-    document.getElementById("categoryFilter").addEventListener("change", filterQuotes);
-    document.getElementById("syncQuotesBtn").addEventListener("click", fetchQuotesFromServer);
-
-    fetchQuotesFromServer();
-    setInterval(fetchQuotesFromServer, 30000);
-
-    /* -------------------------------
-   🧩 Task 1: Export Quotes as JSON (Uses Blob)
+   🧩 TASK 1: Export Quotes as JSON (Uses Blob)
 -------------------------------- */
 function exportQuotes() {
     if (quotes.length === 0) {
@@ -192,7 +169,6 @@ function exportQuotes() {
         return;
     }
 
-    // Convert to JSON and create a downloadable Blob
     const blob = new Blob([JSON.stringify(quotes, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
@@ -208,18 +184,57 @@ function exportQuotes() {
     alert("Quotes exported successfully!");
 }
 
+/* -------------------------------
+   🧩 TASK 1: Import Quotes using FileReader
+-------------------------------- */
+function importFromJsonFile(event) {
+    const file = event.target.files[0];
+    if (!file) {
+        alert("No file selected.");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        try {
+            const importedQuotes = JSON.parse(e.target.result);
+            if (!Array.isArray(importedQuotes)) {
+                alert("Invalid JSON format.");
+                return;
+            }
+
+            importedQuotes.forEach(q => {
+                quotes.push({
+                    text: q.text || q.title,
+                    author: q.author || "Unknown",
+                    category: q.category || "Imported"
+                });
+            });
+
+            saveQuotes();
+            populateCategories();
+            alert("Quotes imported successfully!");
+        } catch (err) {
+            console.error("Import failed:", err);
+            alert("Failed to import JSON file.");
+        }
+    };
+
+    reader.readAsText(file);
+}
+
+/* -------------------------------
+   🚀 INITIALIZE
+-------------------------------- */
+document.addEventListener("DOMContentLoaded", () => {
+    createAddQuoteForm();
+    populateCategories();
+
+    document.getElementById("showQuoteBtn").addEventListener("click", showRandomQuote);
+    document.getElementById("categoryFilter").addEventListener("change", filterQuotes);
+    document.getElementById("syncQuotesBtn").addEventListener("click", fetchQuotesFromServer);
+
+    fetchQuotesFromServer();
+    setInterval(fetchQuotesFromServer, 30000);
 });
-
-// Task 1 requirement: use Blob
-const fileData = new Blob(["Sample text file for testing Blob"], { type: "text/plain" });
-const fileURL = URL.createObjectURL(fileData);
-console.log("Blob created:", fileURL);
-
-// Task requirement: using FileReader to read file content
-const reader = new FileReader();
-reader.onload = function(event) {
-  console.log("File content loaded:", event.target.result);
-};
-const sampleFile = new Blob(["This is some sample text content"], { type: "text/plain" });
-reader.readAsText(sampleFile);
-
